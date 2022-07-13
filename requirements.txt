@@ -1,0 +1,11 @@
+streamlit==1.10.0
+pandas==1.2.0
+numpy==1.21.2
+streamlit-aggrid
+pillow== 9.1.0
+plotly-express
+pillow-PIL
+click<=8.0
+plotly==5.2.1
+scikit-learn==1.0.1
+pickle-mixin
