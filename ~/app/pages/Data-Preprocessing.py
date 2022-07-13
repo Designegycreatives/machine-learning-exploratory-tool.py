@@ -38,23 +38,23 @@ try:
 except:
   pass
 
-def get_imputer(imputer):
-  if imputer == 'None':
-    return 'drop'
-  if imputer == 'Most frequent value':
-    return SimpleImputer(strategy='most_frequent', missing_values=np.nan)
-  if imputer == 'Mean':
-    return SimpleImputer(strategy='mean', missing_values=np.nan)
-  if imputer == 'Median':
-    return SimpleImputer(strategy='median', missing_values=np.nan)
+try:
+  def get_imputer(imputer):
+    if imputer == 'None':
+      return 'drop'
+    if imputer == 'Most frequent value':
+      return SimpleImputer(strategy='most_frequent', missing_values=np.nan)
+    if imputer == 'Mean':
+      return SimpleImputer(strategy='mean', missing_values=np.nan)
+    if imputer == 'Median':
+      return SimpleImputer(strategy='median', missing_values=np.nan)
 
-def get_encoder(encoder):
-  if encoder == 'None':
-    return 'drop'
-  if encoder == 'OneHotEncoder':
-    return OneHotEncoder(handle_unknown='ignore', sparse=False)
-  
-def get_scaler(scaler):
+  def get_encoder(encoder):
+    if encoder == 'None':
+      return 'drop'
+    if encoder == 'OneHotEncoder':
+      return OneHotEncoder(handle_unknown='ignore', sparse=False)
+  def get_scaler(scaler):
     if scaler == 'None':
         return 'passthrough'
     if scaler == 'Standard scaler':
@@ -64,21 +64,21 @@ def get_scaler(scaler):
     if scaler == 'Robust scaler':
         return RobustScaler()
     
-def get_pip_mis_num(imputer, scaler):
+  def get_pip_mis_num(imputer, scaler):
     if imputer == 'None':
         return 'drop'
     pipeline = make_pipeline(get_imputer(imputer))
     pipeline.steps.append(('scaling', get_scaler(scaler)))
     return pipeline
 
-def get_pip_mis_cat(imputer, encoder):
+  def get_pip_mis_cat(imputer, encoder):
     if imputer == 'None' or encoder == 'None':
         return 'drop'
     pipeline = make_pipeline(get_imputer(imputer))
     pipeline.steps.append(('encoding', get_encoder(encoder)))
-    return pipeline
-
-def get_ml_algorithm(algorithm):
+    return pipeline 
+ 
+  def get_ml_algorithm(algorithm):
     if algorithm == 'Logistic regression':
         return LogisticRegression()
     if algorithm == 'Support vector':
@@ -87,38 +87,40 @@ def get_ml_algorithm(algorithm):
         return KNeighborsClassifier()
     if algorithm == 'Random forest':
         return RandomForestClassifier()
-      
-target_selected = st.multiselect("Choose Column:",options=df.columns)
-cat_cols_missing = st.multiselect("Choose Column:",options=df.columns)
-num_cols_missing =  st.multiselect("Choose Column:",options=df.columns)
-cat_cols =  st.multiselect("Choose Column:",options=df.columns)
-num_cols =  st.multiselect("Choose Column:",options=df.columns)
-drop_cols =  st.multiselect("Choose Column:",options=df.columns)
+  target_selected = st.multiselect("Choose Column:",options=df.columns)
+  cat_cols_missing = st.multiselect("Choose Column:",options=df.columns)
+  num_cols_missing =  st.multiselect("Choose Column:",options=df.columns)
+  cat_cols =  st.multiselect("Choose Column:",options=df.columns)
+  num_cols =  st.multiselect("Choose Column:",options=df.columns)
+  drop_cols =  st.multiselect("Choose Column:",options=df.columns)
+        
 
-X = df.drop(columns = target_selected)
-y = df[target_selected].values.ravel()
+  X = df.drop(columns = target_selected)
+  y = df[target_selected].values.ravel()
 
-st.title('Preprocessing')
-cat_imputer_selected = st.sidebar.selectbox('Handling categorical missing values', ['None', 'Most frequent value'])
-num_imputer_selected = st.sidebar.selectbox('Handling numerical missing values', ['None', 'Median', 'Mean'])
-encoder_selected = st.sidebar.selectbox('Encoding categorical values', ['None', 'OneHotEncoder'])
-scaler_selected = st.sidebar.selectbox('Scaling', ['None', 'Standard scaler', 'MinMax scaler', 'Robust scaler'])
+  st.title('Preprocessing')
+  cat_imputer_selected = st.sidebar.selectbox('Handling categorical missing values', ['None', 'Most frequent value'])
+  num_imputer_selected = st.sidebar.selectbox('Handling numerical missing values', ['None', 'Median', 'Mean'])
+  encoder_selected = st.sidebar.selectbox('Encoding categorical values', ['None', 'OneHotEncoder'])
+  scaler_selected = st.sidebar.selectbox('Scaling', ['None', 'Standard scaler', 'MinMax scaler', 'Robust scaler'])
 
-preprocessing = make_column_transformer( 
-    (get_pip_mis_cat(cat_imputer_selected, encoder_selected) , cat_cols_missing),
-    (get_pip_mis_num(num_imputer_selected, scaler_selected) , num_cols_missing),
-    (get_encoder(encoder_selected), cat_cols),
-    (get_scaler(scaler_selected), num_cols),
-    ("drop" , drop_cols)
-)
+   preprocessing = make_column_transformer( 
+     (get_pip_mis_cat(cat_imputer_selected, encoder_selected) , cat_cols_missing),
+     (get_pip_mis_num(num_imputer_selected, scaler_selected) , num_cols_missing),
+     (get_encoder(encoder_selected), cat_cols),
+     (get_scaler(scaler_selected), num_cols),
+     ("drop" , drop_cols)
+   )
 
-preprocessing_pipeline = Pipeline([
+   preprocessing_pipeline = Pipeline([
     ('preprocessing' , preprocessing)
-])
+   ])
 
-preprocessing_pipeline.fit(X)
-X_preprocessed = preprocessing_pipeline.transform(X)
+   preprocessing_pipeline.fit(X)
+   X_preprocessed = preprocessing_pipeline.transform(X)
 
-st.header('Preprocessed dataset')
-st.write(X_preprocessed)
-
+   st.header('Preprocessed dataset')
+   st.write(X_preprocessed)
+  
+except:
+  pass
