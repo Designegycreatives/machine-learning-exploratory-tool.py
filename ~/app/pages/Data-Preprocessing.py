@@ -104,23 +104,23 @@ try:
   encoder_selected = st.sidebar.selectbox('Encoding categorical values', ['None', 'OneHotEncoder'])
   scaler_selected = st.sidebar.selectbox('Scaling', ['None', 'Standard scaler', 'MinMax scaler', 'Robust scaler'])
 
-   preprocessing = make_column_transformer( 
+  preprocessing = make_column_transformer( 
      (get_pip_mis_cat(cat_imputer_selected, encoder_selected) , cat_cols_missing),
      (get_pip_mis_num(num_imputer_selected, scaler_selected) , num_cols_missing),
      (get_encoder(encoder_selected), cat_cols),
      (get_scaler(scaler_selected), num_cols),
      ("drop" , drop_cols)
-   )
+  )
 
-   preprocessing_pipeline = Pipeline([
+  preprocessing_pipeline = Pipeline([
     ('preprocessing' , preprocessing)
-   ])
+  ])
 
-   preprocessing_pipeline.fit(X)
-   X_preprocessed = preprocessing_pipeline.transform(X)
+  preprocessing_pipeline.fit(X)
+  X_preprocessed = preprocessing_pipeline.transform(X)
 
-   st.header('Preprocessed dataset')
-   st.write(X_preprocessed)
+  st.header('Preprocessed dataset')
+  st.write(X_preprocessed)
   
 except:
   pass
