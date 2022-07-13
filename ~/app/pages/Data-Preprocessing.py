@@ -87,11 +87,11 @@ try:
         return KNeighborsClassifier()
     if algorithm == 'Random forest':
         return RandomForestClassifier()
-  target_selected = st.multiselect("Choose Column:",options=df.columns)
-  cat_cols_missing = st.multiselect("Choose Column:",options=df.columns)
-  num_cols_missing =  st.multiselect("Choose Column:",options=df.columns)
+  target_selected = st.selectbox("Choose Target:",options=df.columns)
+  cat_cols_missing = st.selectbox("Choose Category",options=df.columns)
+  num_cols_missing =  st.selectbox("Choose number Column:",options=df.columns)
   cat_cols =  st.multiselect("Choose Column:",options=df.columns)
-  num_cols =  st.multiselect("Choose Column:",options=df.columns)
+  num_cols =  st.selectbox("Choose Column:",options=df.columns)
   drop_cols =  st.multiselect("Choose Column:",options=df.columns)
         
 
