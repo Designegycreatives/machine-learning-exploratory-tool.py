@@ -92,7 +92,7 @@ try:
   num_cols_missing =  st.selectbox("Choose number Column:",options=df.columns)
   cat_cols =  st.multiselect("Choose Column:",options=df.columns)
   num_cols =  st.selectbox("Choose Column:",options=df.columns)
-  drop_cols =  st.multiselect("Choose Column:",options=df.columns)
+  drop_cols =  st.selectbox("Choose Column:",options=df.columns)
         
 
   X = df.drop(columns = target_selected)
