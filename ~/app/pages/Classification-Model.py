@@ -5,7 +5,7 @@ import os
 from openpyxl import load_workbook
 from sklearn.preprocessing import OneHotEncoder, StandardScaler, MinMaxScaler, RobustScaler
 from sklearn.impute import SimpleImputer
-from sklearn.pipeline import make_pipelie, Pipeline
+from sklearn.pipeline import make_pipeline, Pipeline
 from sklearn.compose import make_column_transformer
 from sklearn.model_selection import KFold, cross_val_score
 from sklearn.linear_model import LogisticRegression
