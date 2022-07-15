@@ -97,7 +97,13 @@ try:
   num_imputer_selected = st.sidebar.selectbox('Handling numerical missing values', ['None', 'Median', 'Mean'])
   encoder_selected = st.sidebar.selectbox('Encoding categorical values', ['None', 'OneHotEncoder'])
   scaler_selected = st.sidebar.selectbox('Scaling', ['None', 'Standard scaler', 'MinMax scaler', 'Robust scaler'])
-
+  
+  cat_cols_missing = st.selectbox("Choose cat_cols_missing value:",options=df.columns)
+  num_cols_missing = st.selectbox("Choose num_cols_missing value:",options=df.columns)
+  cat_cols = st.multiselect("Choose cat_cols value:",options=df.columns)
+  num_cols = st.selectbox("Choose num_cols value:",options=df.columns)
+  drop_cols = st.selectbox("Choose drop_cols value:",options=df.columns)
+  
   preprocessing = make_column_transformer( 
      (get_pip_mis_cat(cat_imputer_selected, encoder_selected) , cat_cols_missing),
      (get_pip_mis_num(num_imputer_selected, scaler_selected) , num_cols_missing),
