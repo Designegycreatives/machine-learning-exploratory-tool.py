@@ -89,7 +89,7 @@ try:
         return RandomForestClassifier()
         
 
-  X = st.selectbox("Choose X Values:",options=df.columns)
+  X = st.multiselect("Choose X Values:",options=df.columns)
   y = st.selectbox("Choose Y Values:",options=df.columns)
 
   st.title('Preprocessing')
