@@ -87,16 +87,10 @@ try:
         return KNeighborsClassifier()
     if algorithm == 'Random forest':
         return RandomForestClassifier()
-  target_selected = st.selectbox("Choose Target:",options=df.columns)
-  cat_cols_missing = st.selectbox("Choose Category",options=df.columns)
-  num_cols_missing =  st.selectbox("Choose number Column:",options=df.columns)
-  cat_cols =  st.multiselect("Choose Column:",options=df.columns)
-  num_cols =  st.selectbox("Choose Column:",options=df.columns)
-  drop_cols =  st.selectbox("Choose Column:",options=df.columns)
         
 
-  X = df.drop(columns = target_selected)
-  y = df[target_selected].values.ravel()
+  X = st.selectbox("Choose X Values:",options=df.columns)
+  y = st.selectbox("Choose Y Values:",options=df.columns)
 
   st.title('Preprocessing')
   cat_imputer_selected = st.sidebar.selectbox('Handling categorical missing values', ['None', 'Most frequent value'])
