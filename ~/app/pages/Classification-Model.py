@@ -88,17 +88,40 @@ try:
         return KNeighborsClassifier()
     if algorithm == 'Random forest':
         return RandomForestClassifier()
-  target_selected = st.multiselect("Choose Column:",options=df.columns)
-  cat_cols_missing = st.multiselect("Choose Column:",options=df.columns)
-  num_cols_missing =  st.multiselect("Choose Column:",options=df.columns)
-  cat_cols =  st.multiselect("Choose Column:",options=df.columns)
-  num_cols =  st.multiselect("Choose Column:",options=df.columns)
-  drop_cols =  st.multiselect("Choose Column:",options=df.columns)
-        
 
-  X = df.drop(columns = target_selected)
-  y = df[target_selected].values.ravel()
+  X = st.multiselect("Choose X Values:",options=df.columns)
+  y = st.selectbox("Choose Y Values:",options=df.columns)
 
+  st.title('Preprocessing')
+  cat_imputer_selected = st.sidebar.selectbox('Handling categorical missing values', ['None', 'Most frequent value'])
+  num_imputer_selected = st.sidebar.selectbox('Handling numerical missing values', ['None', 'Median', 'Mean'])
+  encoder_selected = st.sidebar.selectbox('Encoding categorical values', ['None', 'OneHotEncoder'])
+  scaler_selected = st.sidebar.selectbox('Scaling', ['None', 'Standard scaler', 'MinMax scaler', 'Robust scaler'])
+  
+  cat_cols_missing = st.selectbox("Choose cat_cols_missing value:",options=df.columns)
+  num_cols_missing = st.selectbox("Choose num_cols_missing value:",options=df.columns)
+  cat_cols = st.multiselect("Choose cat_cols value:",options=df.columns)
+  num_cols = st.selectbox("Choose num_cols value:",options=df.columns)
+  drop_cols = st.selectbox("Choose drop_cols value:",options=df.columns)
+  
+  preprocessing = make_column_transformer( 
+     (get_pip_mis_cat(cat_imputer_selected, encoder_selected) , cat_cols_missing),
+     (get_pip_mis_num(num_imputer_selected, scaler_selected) , num_cols_missing),
+     (get_encoder(encoder_selected), cat_cols),
+     (get_scaler(scaler_selected), num_cols),
+     ("drop" , drop_cols)
+  )
+
+  preprocessing_pipeline = Pipeline([
+    ('preprocessing' , preprocessing)
+  ])
+
+  preprocessing_pipeline.fit(X)
+  X_preprocessed = preprocessing_pipeline.transform(X)
+
+  st.header('Preprocessed dataset')
+  st.write(X_preprocessed)
+  
   st.title('Model Selection')
 
   classifier_list = ['Logistic regression', 'Support vector', 'K nearest neighbors', 'Random forest']
