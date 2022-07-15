@@ -55,7 +55,7 @@ try:
   num_cols = st.selectbox("Choose num_cols value:",options=df.columns)
   drop_cols = st.selectbox("Choose drop_cols value:",options=df.columns)
   
-   def get_imputer(imputer):
+  def get_imputer(imputer):
     if imputer == 'None':
       return 'drop'
     if imputer == 'Most frequent value':
